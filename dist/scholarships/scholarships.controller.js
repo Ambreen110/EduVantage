@@ -24,6 +24,9 @@ let ScholarshipsController = class ScholarshipsController {
         console.log(createScholarshipDto);
         return this.scholarshipsService.create(createScholarshipDto);
     }
+    async findAll() {
+        return this.scholarshipsService.findAll();
+    }
 };
 exports.ScholarshipsController = ScholarshipsController;
 __decorate([
@@ -33,6 +36,12 @@ __decorate([
     __metadata("design:paramtypes", [create_scholarship_dto_1.CreateScholarshipDto]),
     __metadata("design:returntype", Promise)
 ], ScholarshipsController.prototype, "create", null);
+__decorate([
+    (0, common_1.Get)(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], ScholarshipsController.prototype, "findAll", null);
 exports.ScholarshipsController = ScholarshipsController = __decorate([
     (0, common_1.Controller)('scholarships'),
     __metadata("design:paramtypes", [scholarships_service_1.ScholarshipsService])

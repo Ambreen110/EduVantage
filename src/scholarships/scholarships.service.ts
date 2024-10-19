@@ -12,4 +12,7 @@ export class ScholarshipsService {
     const newScholarship = new this.scholarshipModel(createScholarshipDto);
     return newScholarship.save();
   }
+  async findAll(): Promise<Scholarship[]> {
+    return this.scholarshipModel.find().exec();
+  }
 }

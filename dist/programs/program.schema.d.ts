@@ -1,22 +1,17 @@
-import mongoose, { Document, Types } from 'mongoose';
+import { Document } from 'mongoose';
+import { EnglishLanguageTestDto } from './dto/english-language-test.dto';
 export declare class Program extends Document {
-    static insertMany(programs: Program[]): void;
     type: string;
-    englishLanguageTest: {
-        IELTS?: string;
-        Duolingo?: string;
-        TOEFL?: string;
-    };
+    englishLanguageTest: EnglishLanguageTestDto;
+    casInterview?: 'Yes' | 'No' | 'Not specified';
+    offerLetterDuration?: string;
     initialDeposit?: number;
-    casInterview: 'Yes' | 'No' | 'Not specified' | null;
-    offerLetterDuration: string;
-    university: Types.ObjectId;
 }
-export declare const ProgramSchema: mongoose.Schema<Program, mongoose.Model<Program, any, any, any, mongoose.Document<unknown, any, Program> & Program & Required<{
+export declare const ProgramSchema: import("mongoose").Schema<Program, import("mongoose").Model<Program, any, any, any, Document<unknown, any, Program> & Program & Required<{
     _id: unknown;
 }> & {
     __v?: number;
-}, any>, {}, {}, {}, {}, mongoose.DefaultSchemaOptions, Program, mongoose.Document<unknown, {}, mongoose.FlatRecord<Program>> & mongoose.FlatRecord<Program> & Required<{
+}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Program, Document<unknown, {}, import("mongoose").FlatRecord<Program>> & import("mongoose").FlatRecord<Program> & Required<{
     _id: unknown;
 }> & {
     __v?: number;

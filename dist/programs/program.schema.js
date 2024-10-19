@@ -12,10 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProgramSchema = exports.Program = void 0;
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
+const english_language_test_dto_1 = require("./dto/english-language-test.dto");
 let Program = class Program extends mongoose_2.Document {
-    static insertMany(programs) {
-        throw new Error('Method not implemented.');
-    }
 };
 exports.Program = Program;
 __decorate([
@@ -23,22 +21,11 @@ __decorate([
     __metadata("design:type", String)
 ], Program.prototype, "type", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({
-        type: {
-            IELTS: { type: String, required: false },
-            Duolingo: { type: String, required: false },
-            TOEFL: { type: String, required: false },
-        },
-        required: false,
-    }),
-    __metadata("design:type", Object)
+    (0, mongoose_1.Prop)({ type: Object, required: true }),
+    __metadata("design:type", english_language_test_dto_1.EnglishLanguageTestDto)
 ], Program.prototype, "englishLanguageTest", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ required: false }),
-    __metadata("design:type", Number)
-], Program.prototype, "initialDeposit", void 0);
-__decorate([
-    (0, mongoose_1.Prop)({ type: String }),
+    (0, mongoose_1.Prop)({ enum: ['Yes', 'No', 'Not specified'], default: 'Not specified' }),
     __metadata("design:type", String)
 ], Program.prototype, "casInterview", void 0);
 __decorate([
@@ -46,9 +33,9 @@ __decorate([
     __metadata("design:type", String)
 ], Program.prototype, "offerLetterDuration", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ type: mongoose_2.default.Schema.Types.ObjectId, ref: 'University' }),
-    __metadata("design:type", mongoose_2.Types.ObjectId)
-], Program.prototype, "university", void 0);
+    (0, mongoose_1.Prop)({ type: Number }),
+    __metadata("design:type", Number)
+], Program.prototype, "initialDeposit", void 0);
 exports.Program = Program = __decorate([
     (0, mongoose_1.Schema)()
 ], Program);

@@ -13,44 +13,23 @@ exports.CreateUniversityDto = void 0;
 const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
 const create_scholarship_dto_1 = require("../../scholarships/dto/create-scholarship.dto");
-class EnglishLanguageTestDto {
-}
-__decorate([
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], EnglishLanguageTestDto.prototype, "IELTS", void 0);
-__decorate([
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], EnglishLanguageTestDto.prototype, "Duolingo", void 0);
-__decorate([
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], EnglishLanguageTestDto.prototype, "TOEFL", void 0);
-class ProgramDto {
+const create_program_dto_1 = require("../../programs/dto/create-program.dto");
+class FeeStructure {
 }
 __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], ProgramDto.prototype, "type", void 0);
+], FeeStructure.prototype, "tuitionFee", void 0);
 __decorate([
-    (0, class_validator_1.ValidateNested)(),
-    (0, class_transformer_1.Type)(() => EnglishLanguageTestDto),
-    __metadata("design:type", EnglishLanguageTestDto)
-], ProgramDto.prototype, "englishLanguageTest", void 0);
-__decorate([
-    (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], ProgramDto.prototype, "casInterview", void 0);
+], FeeStructure.prototype, "initialDeposit", void 0);
+class ApplicationRequirements {
+}
 __decorate([
-    (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], ProgramDto.prototype, "offerLetterDuration", void 0);
+], ApplicationRequirements.prototype, "academicRequirement", void 0);
 class CreateUniversityDto {
 }
 exports.CreateUniversityDto = CreateUniversityDto;
@@ -67,13 +46,15 @@ __decorate([
     __metadata("design:type", String)
 ], CreateUniversityDto.prototype, "place", void 0);
 __decorate([
-    (0, class_validator_1.IsObject)(),
-    __metadata("design:type", Object)
+    (0, class_validator_1.IsDefined)(),
+    (0, class_validator_1.ValidateNested)(),
+    (0, class_transformer_1.Type)(() => FeeStructure),
+    __metadata("design:type", FeeStructure)
 ], CreateUniversityDto.prototype, "feeStructure", void 0);
 __decorate([
     (0, class_validator_1.IsArray)(),
     (0, class_validator_1.ValidateNested)({ each: true }),
-    (0, class_transformer_1.Type)(() => ProgramDto),
+    (0, class_transformer_1.Type)(() => create_program_dto_1.CreateProgramDto),
     __metadata("design:type", Array)
 ], CreateUniversityDto.prototype, "programs", void 0);
 __decorate([
@@ -84,7 +65,8 @@ __decorate([
 ], CreateUniversityDto.prototype, "scholarship", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsObject)(),
-    __metadata("design:type", Object)
+    (0, class_validator_1.ValidateNested)(),
+    (0, class_transformer_1.Type)(() => ApplicationRequirements),
+    __metadata("design:type", ApplicationRequirements)
 ], CreateUniversityDto.prototype, "applicationRequirements", void 0);
 //# sourceMappingURL=create-university.dto.js.map

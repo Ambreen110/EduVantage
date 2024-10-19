@@ -28,28 +28,21 @@ __decorate([
     __metadata("design:type", String)
 ], University.prototype, "place", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({
-        type: [{ type: mongoose_2.Types.ObjectId, ref: 'Program' }],
-        required: true,
-    }),
+    (0, mongoose_1.Prop)({ type: Object }),
+    __metadata("design:type", Object)
+], University.prototype, "feeStructure", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: [{ type: mongoose_2.Types.ObjectId, ref: 'Program' }] }),
     __metadata("design:type", Array)
 ], University.prototype, "programs", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({
-        type: mongoose_2.Types.ObjectId,
-        ref: 'ApplicationRequirements',
-        required: false,
-    }),
-    __metadata("design:type", mongoose_2.Types.ObjectId)
-], University.prototype, "applicationRequirements", void 0);
-__decorate([
-    (0, mongoose_1.Prop)({
-        type: mongoose_2.Types.ObjectId,
-        ref: 'Scholarship',
-        required: false,
-    }),
+    (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: 'Scholarship' }),
     __metadata("design:type", mongoose_2.Types.ObjectId)
 ], University.prototype, "scholarship", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: 'ApplicationRequirements' }),
+    __metadata("design:type", mongoose_2.Types.ObjectId)
+], University.prototype, "applicationRequirements", void 0);
 exports.University = University = __decorate([
     (0, mongoose_1.Schema)()
 ], University);

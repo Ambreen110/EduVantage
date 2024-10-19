@@ -1,14 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Program } from './program.schema';
 import { CreateProgramDto } from './dto/create-program.dto';
+import { University } from 'src/universities/university.schema';
 
 @Injectable()
 export class ProgramsService {
-  addProgramToUniversity(universityId: string, createProgramDto: any): import("../universities/university.schema").University | PromiseLike<import("../universities/university.schema").University> {
-      throw new Error('Method not implemented.');
-  }
+  universityModel: any;
   constructor(
     @InjectModel(Program.name) private programModel: Model<Program>,
   ) {}
@@ -22,6 +21,11 @@ export class ProgramsService {
     return await this.programModel.find().exec();
   }
 
+  async insertMany(programs: CreateProgramDto[]): Promise<Program[]> {
+    const createdPrograms = await this.programModel.insertMany(programs);
+    return createdPrograms.map(program => program.toObject()); // Convert Mongoose Document to plain object
+}
+
   async findById(id: string): Promise<Program> {
     return await this.programModel.findById(id).exec();
   }
@@ -32,5 +36,16 @@ export class ProgramsService {
 
   async delete(id: string): Promise<Program> {
     return await this.programModel.findByIdAndDelete(id).exec();
+  }
+
+  async addProgramToUniversity(universityId: string, createProgramDto: CreateProgramDto): Promise<University> {
+    const university = await this.universityModel.findById(universityId);
+    if (!university) {
+      throw new NotFoundException(`University with ID ${universityId} not found`);
+    }
+    const newProgram = new this.programModel(createProgramDto);
+    university.programs.push(newProgram);
+    await university.save();
+    return university;
   }
 }

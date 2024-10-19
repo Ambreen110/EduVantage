@@ -6,6 +6,7 @@ export declare class UniversitiesController {
     constructor(universitiesService: UniversitiesService);
     createUniversity(createUniversityDto: CreateUniversityDto): Promise<import("./university.schema").University>;
     getAllUniversities(): Promise<import("./university.schema").University[]>;
+    searchUniversities(query: string): Promise<import("./university.schema").University[]>;
     getUniversityById(id: string): Promise<import("./university.schema").University>;
     updateUniversity(id: string, updateUniversityDto: UpdateUniversityDto): Promise<import("./university.schema").University>;
     deleteUniversity(id: string): Promise<void>;

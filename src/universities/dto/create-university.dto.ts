@@ -1,66 +1,48 @@
-import { IsString, IsArray, IsObject, IsOptional, ValidateNested } from 'class-validator';
+import { IsString, IsArray, IsOptional, ValidateNested, IsObject, IsDefined, IsNumber } from 'class-validator';
 import { Type } from 'class-transformer';
-import { CreateScholarshipDto } from '../../scholarships/dto/create-scholarship.dto'; // Import your scholarship DTO
+import { CreateScholarshipDto } from '../../scholarships/dto/create-scholarship.dto';
+import { CreateProgramDto } from 'src/programs/dto/create-program.dto';
 
-class EnglishLanguageTestDto {
-    @IsOptional()
-    @IsString()
-    IELTS?: string;
+class FeeStructure {
+  @IsString()
+  tuitionFee: string;
 
-    @IsOptional()
-    @IsString()
-    Duolingo?: string;
-
-    @IsOptional()
-    @IsString()
-    TOEFL?: string;
+  @IsString()
+  initialDeposit: string;
 }
 
-class ProgramDto {
-    @IsString()
-    type: string;
-
-    @ValidateNested()
-    @Type(() => EnglishLanguageTestDto)
-    englishLanguageTest: EnglishLanguageTestDto;
-
-    @IsOptional()
-    @IsString()
-    casInterview?: string;
-
-    @IsOptional()
-    @IsString()
-    offerLetterDuration?: string;
+class ApplicationRequirements {
+  @IsString()
+  academicRequirement: string;
 }
 
 export class CreateUniversityDto {
-    @IsString()
-    name: string;
+  @IsString()
+  name: string;
 
-    @IsString()
-    country: string;
+  @IsString()
+  country: string;
 
-    @IsString()
-    place: string;
+  @IsString()
+  place: string;
 
-    @IsObject()
-    feeStructure: {
-        // Specify any relevant properties if needed
-    };
+  @IsDefined()
+  @ValidateNested()
+  @Type(() => FeeStructure)
+  feeStructure: FeeStructure;
 
-    @IsArray()
-    @ValidateNested({ each: true })
-    @Type(() => ProgramDto)
-    programs: ProgramDto[];
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateProgramDto)
+  programs: CreateProgramDto[];
 
-    @IsOptional()
-    @ValidateNested()
-    @Type(() => CreateScholarshipDto) // Use the scholarship DTO here
-    scholarship?: CreateScholarshipDto;
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => CreateScholarshipDto)
+  scholarship?: CreateScholarshipDto;
 
-    @IsOptional()
-    @IsObject()
-    applicationRequirements: {
-        academicRequirement: string;
-    };
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => ApplicationRequirements)
+  applicationRequirements?: ApplicationRequirements;
 }

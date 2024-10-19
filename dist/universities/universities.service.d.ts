@@ -16,4 +16,5 @@ export declare class UniversitiesService {
     findOne(id: string): Promise<University>;
     update(id: string, updateUniversityDto: UpdateUniversityDto): Promise<University>;
     remove(id: string): Promise<void>;
+    search(query: string): Promise<University[]>;
 }

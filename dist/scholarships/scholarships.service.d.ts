@@ -5,4 +5,5 @@ export declare class ScholarshipsService {
     private scholarshipModel;
     constructor(scholarshipModel: Model<Scholarship>);
     create(createScholarshipDto: CreateScholarshipDto): Promise<Scholarship>;
+    findAll(): Promise<Scholarship[]>;
 }

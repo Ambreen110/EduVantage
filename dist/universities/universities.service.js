@@ -24,36 +24,35 @@ let UniversitiesService = class UniversitiesService {
         this.scholarshipModel = scholarshipModel;
     }
     async createUniversity(createUniversityDto) {
-        let applicationRequirementsId = null;
-        if (createUniversityDto.applicationRequirements) {
-            const appReq = new this.appReqModel(createUniversityDto.applicationRequirements);
-            const savedAppReq = await appReq.save();
-            applicationRequirementsId = savedAppReq._id;
-        }
-        let scholarshipId = null;
-        if (createUniversityDto.scholarship) {
-            const scholarship = new this.scholarshipModel(createUniversityDto.scholarship);
-            const savedScholarship = await scholarship.save();
-            scholarshipId = savedScholarship._id;
-        }
-        const programIds = await Promise.all(createUniversityDto.programs.map(async (programDto) => {
-            const casInterviewValue = programDto.casInterview === "Not specified" ? null :
-                programDto.casInterview === "Yes" ? true : false;
-            const program = new this.programModel({
-                ...programDto,
-                casInterview: casInterviewValue,
+        try {
+            let applicationRequirementsId = null;
+            if (createUniversityDto.applicationRequirements) {
+                const appReq = new this.appReqModel(createUniversityDto.applicationRequirements);
+                const savedAppReq = await appReq.save();
+                applicationRequirementsId = savedAppReq._id;
+            }
+            let scholarshipId = null;
+            if (createUniversityDto.scholarship) {
+                const scholarship = new this.scholarshipModel(createUniversityDto.scholarship);
+                const savedScholarship = await scholarship.save();
+                scholarshipId = savedScholarship._id;
+            }
+            const programs = await Promise.all(createUniversityDto.programs.map(async (programDto) => {
+                const program = new this.programModel(programDto);
+                const savedProgram = await program.save();
+                return savedProgram._id;
+            }));
+            const university = new this.universityModel({
+                ...createUniversityDto,
+                programs,
+                scholarship: scholarshipId,
+                applicationRequirements: applicationRequirementsId,
             });
-            const savedProgram = await program.save();
-            return savedProgram._id;
-        }));
-        console.log("ApplicationRequirements ID:", applicationRequirementsId);
-        const university = new this.universityModel({
-            ...createUniversityDto,
-            programs: programIds,
-            scholarship: scholarshipId,
-            applicationRequirements: applicationRequirementsId,
-        });
-        return await university.save();
+            return await university.save();
+        }
+        catch (error) {
+            throw new Error(`Error creating university: ${error.message}`);
+        }
     }
     async findAll() {
         return this.universityModel
@@ -79,25 +78,26 @@ let UniversitiesService = class UniversitiesService {
         if (updateUniversityDto.programs) {
             const programs = await Promise.all(updateUniversityDto.programs.map(async (programDto) => {
                 if (programDto._id) {
-                    await this.programModel.findByIdAndUpdate(programDto._id, programDto);
-                    return programDto._id;
+                    const updatedProgram = await this.programModel.findByIdAndUpdate(programDto._id, programDto, { new: true });
+                    return updatedProgram?._id;
                 }
                 else {
-                    const program = new this.programModel(programDto);
-                    await program.save();
-                    return program._id;
+                    const newProgram = new this.programModel(programDto);
+                    const savedProgram = await newProgram.save();
+                    return savedProgram._id;
                 }
             }));
-            university.programs = programs;
+            university.programs = programs.map((program) => program);
         }
         if (updateUniversityDto.applicationRequirements) {
-            await this.appReqModel.findByIdAndUpdate(university.applicationRequirements, updateUniversityDto.applicationRequirements, { new: true });
+            const updatedAppReq = await this.appReqModel.findByIdAndUpdate(university.applicationRequirements, updateUniversityDto.applicationRequirements, { new: true });
+            university.applicationRequirements = updatedAppReq?._id;
         }
         if (updateUniversityDto.scholarship) {
-            await this.scholarshipModel.findByIdAndUpdate(university.scholarship, updateUniversityDto.scholarship);
+            const updatedScholarship = await this.scholarshipModel.findByIdAndUpdate(university.scholarship, updateUniversityDto.scholarship, { new: true });
+            university.scholarship = updatedScholarship?._id;
         }
-        await university.set(updateUniversityDto).save();
-        return university;
+        return await university.set(updateUniversityDto).save();
     }
     async remove(id) {
         const university = await this.universityModel.findById(id).exec();
@@ -110,6 +110,31 @@ let UniversitiesService = class UniversitiesService {
             this.scholarshipModel.findByIdAndDelete(university.scholarship).exec(),
             this.universityModel.findByIdAndDelete(id).exec(),
         ]);
+    }
+    async search(query) {
+        const searchCriteria = {
+            $or: [
+                { name: { $regex: query, $options: 'i' } },
+                { country: { $regex: query, $options: 'i' } },
+                { place: { $regex: query, $options: 'i' } },
+                { 'feeStructure.tuitionFee': { $regex: query, $options: 'i' } },
+                { 'feeStructure.initialDeposit': { $regex: query, $options: 'i' } },
+                { 'programs.type': { $regex: query, $options: 'i' } },
+                { 'programs.offerLetterDuration': { $regex: query, $options: 'i' } },
+                { 'programs.englishLanguageTest.IELTS': { $regex: query, $options: 'i' } },
+                { 'programs.englishLanguageTest.Duolingo': { $regex: query, $options: 'i' } },
+                { 'programs.englishLanguageTest.TOEFL': { $regex: query, $options: 'i' } },
+                { 'programs.englishLanguageTest.PTE': { $regex: query, $options: 'i' } },
+                { 'programs.casInterview': { $regex: query, $options: 'i' } },
+                { 'scholarship.name': { $regex: query, $options: 'i' } },
+                { 'scholarship.eligibility': { $regex: query, $options: 'i' } },
+                { 'applicationRequirements.academicRequirement': { $regex: query, $options: 'i' } }
+            ]
+        };
+        return this.universityModel
+            .find(searchCriteria)
+            .populate('programs applicationRequirements scholarship')
+            .exec();
     }
 };
 exports.UniversitiesService = UniversitiesService;

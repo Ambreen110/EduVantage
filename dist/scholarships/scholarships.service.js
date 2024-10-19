@@ -25,6 +25,9 @@ let ScholarshipsService = class ScholarshipsService {
         const newScholarship = new this.scholarshipModel(createScholarshipDto);
         return newScholarship.save();
     }
+    async findAll() {
+        return this.scholarshipModel.find().exec();
+    }
 };
 exports.ScholarshipsService = ScholarshipsService;
 exports.ScholarshipsService = ScholarshipsService = __decorate([

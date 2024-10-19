@@ -1,24 +1,19 @@
 import { CreateScholarshipDto } from '../../scholarships/dto/create-scholarship.dto';
-declare class EnglishLanguageTestDto {
-    IELTS?: string;
-    Duolingo?: string;
-    TOEFL?: string;
+import { CreateProgramDto } from 'src/programs/dto/create-program.dto';
+declare class FeeStructure {
+    tuitionFee: string;
+    initialDeposit: string;
 }
-declare class ProgramDto {
-    type: string;
-    englishLanguageTest: EnglishLanguageTestDto;
-    casInterview?: string;
-    offerLetterDuration?: string;
+declare class ApplicationRequirements {
+    academicRequirement: string;
 }
 export declare class CreateUniversityDto {
     name: string;
     country: string;
     place: string;
-    feeStructure: {};
-    programs: ProgramDto[];
+    feeStructure: FeeStructure;
+    programs: CreateProgramDto[];
     scholarship?: CreateScholarshipDto;
-    applicationRequirements: {
-        academicRequirement: string;
-    };
+    applicationRequirements?: ApplicationRequirements;
 }
 export {};

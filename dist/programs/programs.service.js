@@ -18,9 +18,6 @@ const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
 const program_schema_1 = require("./program.schema");
 let ProgramsService = class ProgramsService {
-    addProgramToUniversity(universityId, createProgramDto) {
-        throw new Error('Method not implemented.');
-    }
     constructor(programModel) {
         this.programModel = programModel;
     }
@@ -31,6 +28,10 @@ let ProgramsService = class ProgramsService {
     async findAll() {
         return await this.programModel.find().exec();
     }
+    async insertMany(programs) {
+        const createdPrograms = await this.programModel.insertMany(programs);
+        return createdPrograms.map(program => program.toObject());
+    }
     async findById(id) {
         return await this.programModel.findById(id).exec();
     }
@@ -39,6 +40,16 @@ let ProgramsService = class ProgramsService {
     }
     async delete(id) {
         return await this.programModel.findByIdAndDelete(id).exec();
+    }
+    async addProgramToUniversity(universityId, createProgramDto) {
+        const university = await this.universityModel.findById(universityId);
+        if (!university) {
+            throw new common_1.NotFoundException(`University with ID ${universityId} not found`);
+        }
+        const newProgram = new this.programModel(createProgramDto);
+        university.programs.push(newProgram);
+        await university.save();
+        return university;
     }
 };
 exports.ProgramsService = ProgramsService;

@@ -9,38 +9,29 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateProgramDto = void 0;
+exports.EnglishLanguageTestDto = void 0;
 const class_validator_1 = require("class-validator");
-const english_language_test_dto_1 = require("./english-language-test.dto");
-class CreateProgramDto {
+class EnglishLanguageTestDto {
 }
-exports.CreateProgramDto = CreateProgramDto;
-__decorate([
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
-], CreateProgramDto.prototype, "_id", void 0);
-__decorate([
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], CreateProgramDto.prototype, "type", void 0);
-__decorate([
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsObject)(),
-    __metadata("design:type", english_language_test_dto_1.EnglishLanguageTestDto)
-], CreateProgramDto.prototype, "englishLanguageTest", void 0);
-__decorate([
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsNumber)(),
-    __metadata("design:type", Number)
-], CreateProgramDto.prototype, "initialDeposit", void 0);
+exports.EnglishLanguageTestDto = EnglishLanguageTestDto;
 __decorate([
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], CreateProgramDto.prototype, "casInterview", void 0);
+], EnglishLanguageTestDto.prototype, "IELTS", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], CreateProgramDto.prototype, "offerLetterDuration", void 0);
-//# sourceMappingURL=create-program.dto.js.map
+], EnglishLanguageTestDto.prototype, "Duolingo", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], EnglishLanguageTestDto.prototype, "TOEFL", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], EnglishLanguageTestDto.prototype, "PTE", void 0);
+//# sourceMappingURL=english-language-test.dto.js.map

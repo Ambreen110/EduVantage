@@ -1,20 +1,16 @@
-import { IsString, IsNumber, IsOptional, IsObject } from 'class-validator';
+import { IsString, IsOptional, IsObject, IsNumber } from 'class-validator';
+import { EnglishLanguageTestDto } from './english-language-test.dto';
 
 export class CreateProgramDto {
-  @IsOptional()
-  @IsString()
-  readonly _id?: string;
 
+  @IsOptional()
+  _id?: string;
   @IsString()
   readonly type: string;
 
   @IsOptional()
   @IsObject()
-  readonly englishLanguageTest?: {
-    IELTS?: string;
-    Duolingo?: string;
-    TOEFL?: string;
-  };
+  readonly englishLanguageTest?: EnglishLanguageTestDto;
 
   @IsOptional()
   @IsNumber()
