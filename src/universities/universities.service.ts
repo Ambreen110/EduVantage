@@ -131,18 +131,19 @@ export class UniversitiesService {
     }
 
     async search(query: string): Promise<University[]> {
+        // Define the search criteria
         const searchCriteria = {
             $or: [
-                // Basic fields
+                // Basic university fields
                 { name: { $regex: query, $options: 'i' } },
                 { country: { $regex: query, $options: 'i' } },
                 { place: { $regex: query, $options: 'i' } },
                 
-                // Fee structure fields
+                // Searching within feeStructure fields
                 { 'feeStructure.tuitionFee': { $regex: query, $options: 'i' } },
                 { 'feeStructure.initialDeposit': { $regex: query, $options: 'i' } },
                 
-                // Program fields
+                // Program-specific searches
                 { 'programs.type': { $regex: query, $options: 'i' } },
                 { 'programs.offerLetterDuration': { $regex: query, $options: 'i' } },
                 { 'programs.englishLanguageTest.IELTS': { $regex: query, $options: 'i' } },
@@ -150,20 +151,22 @@ export class UniversitiesService {
                 { 'programs.englishLanguageTest.TOEFL': { $regex: query, $options: 'i' } },
                 { 'programs.englishLanguageTest.PTE': { $regex: query, $options: 'i' } },
                 { 'programs.casInterview': { $regex: query, $options: 'i' } },
-    
-                // Scholarship fields
+                
+                // Scholarship-specific searches
                 { 'scholarship.name': { $regex: query, $options: 'i' } },
                 { 'scholarship.eligibility': { $regex: query, $options: 'i' } },
-    
-                // Application requirements
-                { 'applicationRequirements.academicRequirement': { $regex: query, $options: 'i' } }
+                
+                // Application requirements searches
+                { 'applicationRequirements.academicRequirement': { $regex: query, $options: 'i' } },
             ]
         };
     
+        // Execute search and return populated data
         return this.universityModel
             .find(searchCriteria)
-            .populate('programs applicationRequirements scholarship')
-            .exec();
+            .populate('programs applicationRequirements scholarship') // populate related schemas
+            .exec(); // execute the query
     }
+    
     
 }

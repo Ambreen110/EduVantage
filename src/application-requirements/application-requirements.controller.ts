@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Put, Delete, Param, Body } from '@nestjs/common';
+import { Controller, Post, Get, Put, Delete, Param, Body, Query, HttpException, HttpStatus } from '@nestjs/common';
 import { ApplicationRequirementsService } from './application-requirements.service';
 import { CreateApplicationRequirementDto } from './dto/create-application-requirement.dto';
 
@@ -15,6 +15,16 @@ export class ApplicationRequirementsController {
   async findAll() {
     return this.appReqService.findAll();
   }
+  @Get('search')
+  async search(@Query('query') query: string) {
+    try {
+      return await this.appReqService.search(query);
+    } catch (error) {
+      console.error('Error during search:', error);
+      throw new HttpException('Search failed', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+  
 
   @Get(':id')
   async findById(@Param('id') id: string) {
@@ -31,3 +41,4 @@ export class ApplicationRequirementsController {
     return this.appReqService.delete(id);
   }
 }
+

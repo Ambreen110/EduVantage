@@ -2,9 +2,9 @@ import { IsString, IsOptional, IsObject, IsNumber } from 'class-validator';
 import { EnglishLanguageTestDto } from './english-language-test.dto';
 
 export class CreateProgramDto {
-
   @IsOptional()
   _id?: string;
+
   @IsString()
   readonly type: string;
 

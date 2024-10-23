@@ -30,4 +30,20 @@ export class ApplicationRequirementsService {
   async delete(id: string): Promise<any> {
     return this.appReqModel.findByIdAndDelete(id).exec();
   }
+
+  // New search method
+  async search(query: string): Promise<ApplicationRequirements[]> {
+    console.log('Search query:', query); // Log the incoming query
+    const regex = new RegExp(query, 'i'); // Create a case-insensitive regex pattern
+    return this.appReqModel.find({
+      $or: [
+        { offerLetterDuration: { $regex: regex } },
+        { depositDetails: { $regex: regex } },
+        { otherRequirement: { $regex: regex } },
+        { academicRequirement: { $regex: regex } },
+      ],
+    }).exec();
+  }
+  
+  
 }

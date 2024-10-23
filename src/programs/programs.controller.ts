@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Put, Delete, Query } from '@nestjs/common';
 import { ProgramsService } from './programs.service';
 import { CreateProgramDto } from './dto/create-program.dto';
 import { Program } from './program.schema';
@@ -16,7 +16,10 @@ export class ProgramsController {
   async findAll(): Promise<Program[]> {
     return await this.programsService.findAll();
   }
-
+  @Get('search')
+  async searchPrograms(@Query('query') query: string) {
+    return await this.programsService.search(query);
+  }
   @Get(':id')
   async findById(@Param('id') id: string): Promise<Program> {
     return await this.programsService.findById(id);
