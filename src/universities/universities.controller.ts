@@ -17,16 +17,18 @@ export class UniversitiesController {
         return this.universitiesService.findAll();
     }
 
+    
     @Get('search')
     async searchUniversities(@Query('query') query: string) {
         return this.universitiesService.search(query);
     }
     
-
     @Get(':id')
     async getUniversityById(@Param('id') id: string) {
         return this.universitiesService.findOne(id);
     }
+
+   
 
     @Put(':id')
     async updateUniversity(
